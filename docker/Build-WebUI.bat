@@ -1,0 +1,1 @@
+docker build --no-cache --build-arg http_proxy=http://10.0.3.252:3128 --build-arg https_proxy=http://10.0.3.252:3128 -t coop/webui:1.0 -f WebUI.Dockerfile ..

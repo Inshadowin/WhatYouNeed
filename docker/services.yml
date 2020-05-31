@@ -1,0 +1,21 @@
+version: "3.5"
+networks:
+  rscore-net:
+    external: true
+    #driver: bridge
+
+services:
+
+  wyn-webui:
+    build: 
+      context: ..
+      dockerfile: ./docker/WebUI.Dockerfile
+    container_name: wyn-webui
+    image: ${WYN_FRONTEND_REGISTRY}/wyn-webui:1.0
+    restart: always
+    networks:
+      - rscore-net
+    ports:
+      - "6699:80"
+    volumes: 
+      - ${ServiceHome}/logs/webui/wyn:/var/log/nginx
