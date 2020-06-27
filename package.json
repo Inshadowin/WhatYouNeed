@@ -38,7 +38,7 @@
     "dotenv-webpack": "^1.7.0",
     "i18next": "^19.4.1",
     "memoize-one": "^5.1.1",
-    "moment": "^2.24.0",
+    "moment": "^2.26.0",
     "query-string": "^6.12.1",
     "rc-queue-anim": "^1.8.4",
     "react": "^16.13.1",

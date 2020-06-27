@@ -29,8 +29,6 @@ const SmartTextBase = React.memo(({ children, title, className, tooltipParams = 
         {children}
     </div>, [className, children]);
 
-    console.log(isTooltipRequired);
-
     if (!isTooltipRequired) return content
 
     return <TooltipComponent {...tooltipParams} title={thisTitle} trigger={isTooltipRequired ? tooltipParams.trigger : ''}>

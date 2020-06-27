@@ -1,17 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DemoText from './text/test/Demo';
-import DemoTable from './dataDisplay/test/tables/Demo';
+import Demo from './demo/Main';
 
 import './styles.css';
 
 class App extends React.Component {
-
   render() {
-    return <React.Fragment>
-      <DemoText />
-      <DemoTable />
-    </React.Fragment>
+    return <Demo />
   }
 }
 
