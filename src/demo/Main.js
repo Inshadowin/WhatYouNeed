@@ -33,7 +33,7 @@ const Main = ({ pages }) => {
                 {pages.map((page, index) => <Menu.Item key={index + 1}><Link to={page.path}>{page.title}</Link></Menu.Item>)}
             </Menu>
         </Sider>
-        <Layout className="site-layout" style={{ marginLeft: 200 }}>
+        <Layout className="site-layout" style={{ marginLeft: 200, height: '100%' }}>
             <Header className="site-layout-background" style={{ padding: 12 }}>Header</Header>
             <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                 <Switch>

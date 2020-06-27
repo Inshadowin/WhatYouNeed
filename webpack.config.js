@@ -141,6 +141,7 @@ module.exports = function (webpackEnv) {
       isEnvDevelopment && new Dotenv(),
       new HtmlWebpackPlugin({
         title: 'WhatYouNeed',
+		favicon: './src/favicon.ico',
         template: './src/template.html'
       }),
       isEnvDevelopment && new Visualizer({

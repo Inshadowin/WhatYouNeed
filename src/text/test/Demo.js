@@ -6,10 +6,10 @@ import ValidatedText from '../ValidatedText';
 
 const Demo = ({ }) => {
     return <React.Fragment>
-        <div style={{ width: 100, marginTop: 150, marginLeft: 150 }}>
+        <div style={{ width: 100 }}>
             <SmartText>text full</SmartText>
         </div>
-        <div style={{ width: 100, marginTop: 50, marginLeft: 150 }}>
+        <div style={{ width: 100, marginTop: 50 }}>
             <SmartText>text overldalsdasdaak pdaspdo apsod </SmartText>
         </div>
         {/* <WarningText>text2</WarningText>
