@@ -1,34 +1,25 @@
 import moment from "moment";
 import settings from '../settings/index';
 
+class WynDate extends moment {
+    formatUserDate = () => {
+        return this.format(settings.dateFormats.viewDateFormat);
+    }
+    formatUserTime = () => {
+        return this.format(settings.dateFormats.viewTimeFormat);
+    }
+    formatUserDateTime = () => {
+        return this.format(settings.dateFormats.viewDateTimeFormat);
+    }
+    formatUserDateTimeFull = () => {
+        return this.format(settings.dateFormats.viewDateTimeFormatFull);
+    }
+}
+
 const getDate = (strDate, format, ...params) => {
-    if (!format) return moment(strDate);
+    if (!format) return new WynDate(strDate);
 
-    const res = moment(strDate, format, ...params);
-    return withFormatters(res);
-};
-
-const withFormatters = obj => {
-    enrichDateFormat(obj);
-    enrichTimeFormat(obj);
-    enrichDateTimeFormat(obj);
-    enrichDateTimeFullFormat(obj);
-
-    return obj;
+    return new WynDate(strDate, format, ...params);
 };
 
-const enrichDateFormat = obj => {
-    obj.formatUserDate = () => obj.format(settings.dateFormats.viewDateFormat);
-};
-const enrichTimeFormat = obj => {
-    obj.formatUserTime = () => obj.format(settings.dateFormats.viewTimeFormat);
-};
-const enrichDateTimeFormat = obj => {
-    obj.formatUserDateTime = () => obj.format(settings.dateFormats.viewDateTimeFormat);
-};
-const enrichDateTimeFullFormat = obj => {
-    obj.formatUserDateTimeFull = () => obj.format(settings.dateFormats.viewDateTimeFormatFull);
-};
-
-export default (strDate, format = settings.dateFormats.serverFormat, ...params) =>
-    getDate(strDate, format, ...params);
+export default (strDate, format = settings.dateFormats.serverFormat, ...params) => getDate(strDate, format, ...params);

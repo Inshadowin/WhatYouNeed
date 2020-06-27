@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const { SourceMapDevToolPlugin } = require("webpack");
 const path = require('path');
 const pkg = require('./package.json');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -136,6 +137,9 @@ module.exports = function (webpackEnv) {
       },
     },
     plugins: [
+	  new SourceMapDevToolPlugin({
+		filename: "[file].map"
+	  }),
       //new webpack.EnvironmentPlugin({ ...process.env }),
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
       isEnvDevelopment && new Dotenv(),
