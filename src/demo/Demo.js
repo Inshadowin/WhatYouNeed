@@ -4,6 +4,7 @@ const { Header, Content, Footer, Sider } = Layout;
 import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import DemoText from '../text/test/Demo';
+import DemoTemplates from '../templates/test/Demo';
 import DemoTable from '../dataDisplay/test/tables/Demo';
 import DemoDescriptors from '../descriptors/test/Demo';
 
@@ -17,6 +18,7 @@ const pages = [
     { path: '/', title: 'Home', component: Home },
     { path: '/Text', title: 'Text', component: DemoText },
     { path: '/Table', title: 'Table', component: DemoTable },
+    { path: '/Templates', title: 'Templates', component: DemoTemplates },
     { path: '/Descriptors', title: 'Descriptors', component: DemoDescriptors }
 ]
 

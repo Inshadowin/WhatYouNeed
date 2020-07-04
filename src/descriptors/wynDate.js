@@ -2,24 +2,20 @@ import moment from "moment";
 import settings from '../settings/index';
 
 class WynDate extends moment {
-    formatUserDate = () => {
-        return this.format(settings.dateFormats.viewDateFormat);
+    constructor(...props) {
+        super(...props);
+        this.settings = settings;
     }
-    formatUserTime = () => {
-        return this.format(settings.dateFormats.viewTimeFormat);
-    }
-    formatUserDateTime = () => {
-        return this.format(settings.dateFormats.viewDateTimeFormat);
-    }
-    formatUserDateTimeFull = () => {
-        return this.format(settings.dateFormats.viewDateTimeFormatFull);
-    }
+
+    get settings() { return this.settings };
+    set settings(value = {}) { this.settings = { ...this.settings, ...value } };
+
+    formatUserDate = () => this.format(this.settings.dateFormats.viewDateFormat);
+    formatUserTime = () => this.format(this.settings.dateFormats.viewTimeFormat);
+    formatUserDateTime = () => this.format(this.settings.dateFormats.viewDateTimeFormat);
+    formatUserDateTimeFull = () => this.format(this.settings.dateFormats.viewDateTimeFormatFull);
 }
 
-const getDate = (strDate, format, ...params) => {
-    if (!format) return new WynDate(strDate);
+const getDate = (strDate, format = settings.dateFormats.serverFormat, ...params) => format ? new WynDate(strDate, format, ...params) : new WynDate(strDate);
 
-    return new WynDate(strDate, format, ...params);
-};
-
-export default (strDate, format = settings.dateFormats.serverFormat, ...params) => getDate(strDate, format, ...params);
+export default getDate;

@@ -1,0 +1,27 @@
+.wyn-template-board{
+    width: 100%;
+}
+
+.wyn-template-board .react-grid-item.react-grid-placeholder{
+   visibility: hidden;
+}
+
+.wyn-template-board .wyn-template-component-container{
+    background: transparent;
+    border: 1px transparent dashed;
+
+    /* border-radius: 25% 25% 25% 25%; */
+}
+.wyn-template-board .wyn-template-component-container:hover{
+    border: 1px lightgrey dashed;
+}
+.wyn-template-board .wyn-template-component-container .react-resizable-handle{
+    visibility: hidden;
+}
+.wyn-template-board .wyn-template-component-container:hover .react-resizable-handle{
+    visibility: visible;
+}
+
+.wyn-template-board .wyn-template-component{
+    padding: 20px;
+}
