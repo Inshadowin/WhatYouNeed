@@ -1,3 +1,12 @@
 .wyn-template-selector{
-    width: 100%;
+    /* width: 100%; */
+    width: 30vw;
+}
+
+.wyn-template-selector-item-container{
+    padding: 10px;
+    border: 1px solid lightgray;
+}
+.wyn-template-selector-item-container + .wyn-template-selector-item-container{
+    margin-top: 10px;
 }

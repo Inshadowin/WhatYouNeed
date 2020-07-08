@@ -8,7 +8,7 @@ const Demo = ({ }) => {
     const boardItems = useMemo(() => getBoardItems(), []);
     const selectorItems = useMemo(() => getSelectorItems(), []);
 
-    return <Main boardItems={boardItems} selectorItems={selectorItems} />;
+    return <Main initialBoardItems={boardItems} initialSelectorItems={selectorItems} />;
 }
 
 export default React.memo(Demo);

@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Empty } from 'antd';
+import { debounce } from "debounce";
 
 import Gravity from './Gravity';
 import { defaultLayoutItemRender, defaultGetLayout } from './boardFunctions';
@@ -24,26 +25,59 @@ BoardContainer.defaultProps = {
 //     return <div style={{ background: 'lightblue' }} key={index}>{'ITEM ' + index}</div>
 // })
 
-const Board = ({ empty, children, className, defaultClassName, boardItems, getLayout, layoutItemRender, LayoutItemComponent, GridComponent, ContainerComponent, ...rest }) => {
-    const layout = useMemo(() => getLayout(boardItems || []), [boardItems]);
-    // const boardItemsRendered = useMemo(() => (boardItems || []).map((item, index) => <LayoutItemComponent key={index} index={index} {...item} />), [boardItems]);
-    const boardItemsRendered = useMemo(() => (boardItems || []).map((item, index) => layoutItemRender(index, item)), [boardItems]);
+const Board = ({
+    empty,
+    children,
 
-    if (!boardItems || !boardItems.length) return <BoardContainer defaultClassName={defaultClassName}>{empty}</BoardContainer>;
+    className,
+    defaultClassName,
 
-    const onLayoutChange = (layout) => {
-        console.log(layout)
-    }
+    items,
+    getLayout,
+    layoutItemRender,
+
+    // onDrag,
+    onDrop,
+
+    onLayoutChange,
+    onLayoutChangeDebounceDelay,
+
+    GridComponent,
+    ContainerComponent,
+    LayoutItemComponent,
+
+    ...rest }) => {
+    const layout = useMemo(() => getLayout(items || []), [items]);
+    // const boardItemsRendered = useMemo(() => (boardItems || []).map((item, index) => <LayoutItemComponent key={index} index={index} {...item} />), [items]);
+    const boardItemsRendered = useMemo(() => (items || []).map((item, index) => layoutItemRender(index, item)), [items]);
+
+    if (!items || !items.length) return <BoardContainer defaultClassName={defaultClassName}>{empty}</BoardContainer>;
+
+    const handleLayoutChange = useCallback(debounce((...rest) => {
+        onLayoutChange && onLayoutChange(...rest);
+    }), [onLayoutChange, onLayoutChangeDebounceDelay]);
+    // const handleDrag = useCallback(debounce((element) => {
+    //     onDrag && onDrag(element.e.target);
+    //     // console.log(e.target)
+    // }, dragDebounceDelay), [onDrag, dragDebounceDelay])
+
+    const handleDrop = useCallback((...rest) => {
+        onDrop && onDrop(...rest);
+    }, [onDrop]);
 
     return <BoardContainer className={className} defaultClassName={defaultClassName}>
         <GridComponent
-            cols={50}
-            rowHeight={30}
+            cols={30}
+            autoSize
+            isDroppable
+            rowHeight={50}
+            useCSSTransforms
             compactType={null}
             // verticalCompact={false}
 
             layout={layout}
-            onLayoutChange={onLayoutChange}
+            onDrop={handleDrop}
+            onLayoutChange={handleLayoutChange}
             // droppingItem={''}
             {...rest}
         >
@@ -55,6 +89,7 @@ const Board = ({ empty, children, className, defaultClassName, boardItems, getLa
 Board.defaultProps = {
     empty: <Empty description={'CREATE YOUR PAGE'} image={Empty.PRESENTED_IMAGE_SIMPLE} />,
 
+    onLayoutChangeDebounceDelay: 50,
     measureBeforeMount: true,
     defaultClassName: 'wyn-template-board',
 
