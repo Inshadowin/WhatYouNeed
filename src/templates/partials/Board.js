@@ -42,7 +42,6 @@ const Board = ({
     getLayout,
     layoutItemRender,
 
-    // onDrag,
     onDrop,
 
     onLayoutChange,
@@ -53,8 +52,6 @@ const Board = ({
     LayoutItemComponent,
 
     ...rest }) => {
-    // const layout = useMemo(() => getLayout(items || []), [items]);
-    // const boardItemsRendered = useMemo(() => (items || []).map((item, index) => <LayoutItemComponent key={index} index={index} {...item} />), [items]);
     const boardItemsRendered = useMemo(() => (items || []).map((item, index) => layoutItemRender(index, item)), [items]);
 
     if (!items || !items.length) return <BoardContainer defaultClassName={defaultClassName}>{empty}</BoardContainer>;
@@ -62,10 +59,6 @@ const Board = ({
     const handleLayoutChange = useCallback(debounce((...rest) => {
         onLayoutChange && onLayoutChange(...rest);
     }), [onLayoutChange, onLayoutChangeDebounceDelay]);
-    // const handleDrag = useCallback(debounce((element) => {
-    //     onDrag && onDrag(element.e.target);
-    //     // console.log(e.target)
-    // }, dragDebounceDelay), [onDrag, dragDebounceDelay])
 
     const handleDrop = useCallback((...rest) => {
         onDrop && onDrop(...rest);
@@ -79,9 +72,7 @@ const Board = ({
             rowHeight={50}
             useCSSTransforms
             compactType={null}
-            // verticalCompact={false}
 
-            // layout={layout}
             onDrop={handleDrop}
             onLayoutChange={handleLayoutChange}
             // droppingItem={''}

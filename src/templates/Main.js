@@ -36,10 +36,9 @@ const Main = ({
         <BoardComponent
             items={boardItems}
             layout={boardItems}
-            // layout={boardLayout}
-            onLayoutChange={handleLayoutChange}
 
             onDrop={handleDrop}
+            onLayoutChange={handleLayoutChange}
         />
         <SelectorComponent
             items={selectorItems}
@@ -53,7 +52,7 @@ const processLayoutChange = (newLayout = [], oldBoardItems = []) => {
     if (!newLayout?.length || !oldBoardItems?.length) return [];
 
     const newBoardItems = (oldBoardItems || []).map(item => {
-        const layoutBoardItem = (newLayout || []).filter(layoutItem => layoutItem.i === item.id)[0];
+        const layoutBoardItem = (newLayout || []).filter(layoutItem => layoutItem.i === item.i)[0];
         if (!layoutBoardItem) return item;
 
         //TODO: check with diff
@@ -69,7 +68,10 @@ const processDrop = (e, draggingItem, selectorItems, setBoardItems) => {
 
     const newItem = { ...e, ...(layoutDefaults || {}), Component };
 
-    setBoardItems(oldItems => [...oldItems, { ...newItem, i: oldItems.length.toString() }])
+    setBoardItems(oldItems => {
+        console.log(oldItems);
+        return [...oldItems, { ...newItem, i: oldItems.length.toString() }]
+    })
 }
 
 Main.defaultProps = {
