@@ -4,6 +4,7 @@ import Picture from './Picture';
 import Pop from './Pop';
 import Switch from './Switch';
 import TextArea from './TextArea';
+import { Input, Spin } from 'antd';
 
 export default () => {
     return {
@@ -13,5 +14,7 @@ export default () => {
         Pop,
         Switch,
         TextArea,
+        Input,
+        Spin
     }
 }

@@ -7,9 +7,9 @@ import { defaultLayoutItemRender, defaultGetLayout } from './boardFunctions';
 
 import '../styles/Board.css';
 
-const DivComponent = React.memo((props) => {
-    return <div {...props} />;
-})
+const DivComponent = React.memo(React.forwardRef((props, forwardedRef) => {
+    return <div ref={forwardedRef} {...props} />;
+}))
 
 const BoardContainer = React.memo(({ children, defaultClassName, className, ContainerComponent }) => {
     return <ContainerComponent className={[className, defaultClassName].filter(item => !!item).join(' ')}>
@@ -21,9 +21,15 @@ BoardContainer.defaultProps = {
     ContainerComponent: DivComponent
 }
 
-// const DefaultLayoutItem = React.memo(({ index, ...rest }) => {
-//     return <div style={{ background: 'lightblue' }} key={index}>{'ITEM ' + index}</div>
-// })
+const DefaultLayoutItem = React.memo(React.forwardRef(({ index, Component, ...rest }, forwardedRef) => {
+    const children = Component ? <Component {...rest} /> : `ITEM  ${index}`;
+
+    return <div className={'wyn-template-component-container'} key={index} ref={forwardedRef}>
+        <div className={'wyn-template-component'}>
+            {children}
+        </div>
+    </div>
+}))
 
 const Board = ({
     empty,
@@ -47,8 +53,8 @@ const Board = ({
     LayoutItemComponent,
 
     ...rest }) => {
-    const layout = useMemo(() => getLayout(items || []), [items]);
-    // const boardItemsRendered = useMemo(() => (boardItems || []).map((item, index) => <LayoutItemComponent key={index} index={index} {...item} />), [items]);
+    // const layout = useMemo(() => getLayout(items || []), [items]);
+    // const boardItemsRendered = useMemo(() => (items || []).map((item, index) => <LayoutItemComponent key={index} index={index} {...item} />), [items]);
     const boardItemsRendered = useMemo(() => (items || []).map((item, index) => layoutItemRender(index, item)), [items]);
 
     if (!items || !items.length) return <BoardContainer defaultClassName={defaultClassName}>{empty}</BoardContainer>;
@@ -75,7 +81,7 @@ const Board = ({
             compactType={null}
             // verticalCompact={false}
 
-            layout={layout}
+            // layout={layout}
             onDrop={handleDrop}
             onLayoutChange={handleLayoutChange}
             // droppingItem={''}
@@ -90,14 +96,17 @@ Board.defaultProps = {
     empty: <Empty description={'CREATE YOUR PAGE'} image={Empty.PRESENTED_IMAGE_SIMPLE} />,
 
     onLayoutChangeDebounceDelay: 50,
+
+    preventCollision: true,
     measureBeforeMount: true,
+
     defaultClassName: 'wyn-template-board',
 
     GridComponent: Gravity,
     ContainerComponent: BoardContainer,
 
     getLayout: defaultGetLayout,
-    // LayoutItemComponent: DefaultLayoutItem,
+    LayoutItemComponent: DefaultLayoutItem,
     layoutItemRender: defaultLayoutItemRender,
 }
 

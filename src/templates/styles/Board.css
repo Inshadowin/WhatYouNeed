@@ -10,10 +10,18 @@
     background: transparent;
     border: 1px transparent dashed;
 
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    /* justify-content: center; */
+
     /* border-radius: 25% 25% 25% 25%; */
+    border-radius: 5px;
 }
 .wyn-template-board .wyn-template-component-container:hover{
-    border: 1px lightgrey dashed;
+    /* border: 1px rgba(220, 220, 220, 0.9) dashed; */
+    background: rgba(245, 245, 245, 0.9);
 }
 .wyn-template-board .wyn-template-component-container .react-resizable-handle{
     visibility: hidden;
@@ -23,5 +31,5 @@
 }
 
 .wyn-template-board .wyn-template-component{
-    padding: 20px;
+    padding: 5px;
 }
