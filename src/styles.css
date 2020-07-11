@@ -13,3 +13,81 @@ body {
 
 @import "../node_modules/react-grid-layout/css/styles.css";
 @import "../node_modules/react-resizable/css/styles.css";
+
+:root{
+  --wyn-theme-main-color: white;
+
+  --wyn-size-grid-1: 20px;
+  --wyn-size-grid-2: 10px;
+  --wyn-size-grid-3: 5px;
+  --wyn-size-grid-4: 2px;
+
+  --wyn-scroll-width: var(--wyn-size-grid-2);
+  --wyn-scroll-height: var(--wyn-size-grid-2);
+  --wyn-scroll-invis-area: 2px;
+
+  --wyn-scroll-color: transparent;
+  --wyn-scroll-hover-color: rgba(0, 0, 0, 0.04);
+  --wyn-scroll-thumb-hover-color: rgba(0, 0, 0, 0.25);
+  --wyn-scroll-thumb-active-color: rgba(0, 0, 0, 0.3);
+  --wyn-scroll-thumb-color: rgba(0, 0, 0, 0.15);
+}
+
+* {
+  scrollbar-color: var(--wyn-scroll-color) var(--wyn-scroll-color);
+  scrollbar-width: thin;
+}
+
+*:hover {
+  scrollbar-color: var(--wyn-scroll-thumb-hover-color) var(--wyn-scroll-color);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--wyn-scroll-color) !important;
+  -webkit-box-shadow: unset !important;
+  box-shadow: unset !important;
+}
+*::-webkit-scrollbar-track:hover {
+  background: linear-gradient(
+    var(--wyn-scroll-color) 0px,
+    var(--wyn-scroll-color) var(--wyn-scroll-invis-area),
+    var(--wyn-scroll-hover-color) var(--wyn-scroll-invis-area),
+    var(--wyn-scroll-hover-color) 100%
+  ) !important;
+}
+*::-webkit-scrollbar {
+  width: var(--wyn-scroll-width);
+  height: var(--wyn-scroll-height);
+  background: var(--wyn-scroll-color);
+}
+*::-webkit-scrollbar-thumb:vertical:hover {
+  background: linear-gradient(
+    var(--wyn-scroll-color) 0px,
+    var(--wyn-scroll-color) var(--wyn-scroll-invis-area),
+    var(--wyn-scroll-thumb-hover-color) var(--wyn-scroll-invis-area),
+    var(--wyn-scroll-thumb-hover-color) 100%
+  );
+}
+*::-webkit-scrollbar-thumb:horizontal:active {
+  background: linear-gradient(
+    var(--wyn-scroll-color) 0px,
+    var(--wyn-scroll-color) var(--wyn-scroll-invis-area),
+    var(--wyn-scroll-thumb-active-color) var(--wyn-scroll-invis-area),
+    var(--wyn-scroll-thumb-active-color) 100%
+  );
+}
+*:hover::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    var(--wyn-scroll-color) 0px,
+    var(--wyn-scroll-color) var(--wyn-scroll-invis-area),
+    var(--wyn-scroll-thumb-color) var(--wyn-scroll-invis-area),
+    var(--wyn-scroll-thumb-color) 100%
+  );
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--wyn-scroll-color);
+}
+*::-webkit-scrollbar-corner {
+  background: var(--wyn-scroll-color);
+}

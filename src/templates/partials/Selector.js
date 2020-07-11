@@ -7,11 +7,7 @@ const ContainerComponent = React.memo(({ children, Component, onDragStart, id, .
         id={id}
         draggable
         unselectable="on"
-        // component={Component}
-        onDragStart={e => {
-            e.dataTransfer.setData("text/plain", "");
-            onDragStart(e, id);
-        }}
+        onDragStart={e => { e.dataTransfer.setData("text/plain", ""); onDragStart(e, id); }}
 
         {...rest}
     >
@@ -23,9 +19,20 @@ ContainerComponent.defaultProps = {
     className: 'wyn-template-selector-item-container'
 }
 
-const Selector = ({ className, defaultClassName, items, noPreview, onDragStart }) => {
-    const renderedItems = useMemo(() => (items || []).map(({ preview, id, Component }, index) => <ContainerComponent key={index} id={id} onDragStart={onDragStart} Component={Component}>{preview || noPreview}</ContainerComponent>),
-        [items]);
+const Selector = ({ className, defaultClassName, items, noPreview, onDragStart, onDragEnd }) => {
+    const renderedItems = useMemo(() => (items || []).map(({ preview, id, Component }, index) => <ContainerComponent
+        key={index}
+
+        id={id}
+
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+
+        Component={Component}
+    >
+        {preview || noPreview}
+    </ContainerComponent>
+    ), [items]);
 
     return <div className={[className, defaultClassName].filter(item => !!item).join(' ')}>
         {renderedItems}

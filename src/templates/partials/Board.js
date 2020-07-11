@@ -25,6 +25,7 @@ const DefaultLayoutItem = React.memo(React.forwardRef(({ index, Component, ...re
     const children = Component ? <Component {...rest} /> : `ITEM  ${index}`;
 
     return <div className={'wyn-template-component-container'} key={index} ref={forwardedRef}>
+        <div className={'drag-handle'}></div>
         <div className={'wyn-template-component'}>
             {children}
         </div>
@@ -52,7 +53,7 @@ const Board = ({
     LayoutItemComponent,
 
     ...rest }) => {
-    const boardItemsRendered = useMemo(() => (items || []).map((item, index) => layoutItemRender(index, item)), [items]);
+    const boardItemsRendered = useMemo(() => (items || []).map(item => layoutItemRender(item.i, item)), [items]);
 
     if (!items || !items.length) return <BoardContainer defaultClassName={defaultClassName}>{empty}</BoardContainer>;
 
@@ -72,6 +73,7 @@ const Board = ({
             rowHeight={50}
             useCSSTransforms
             compactType={null}
+            draggableHandle={'.drag-handle'}
 
             onDrop={handleDrop}
             onLayoutChange={handleLayoutChange}

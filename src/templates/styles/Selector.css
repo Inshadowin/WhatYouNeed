@@ -1,6 +1,11 @@
 .wyn-template-selector{
-    /* width: 100%; */
+    position: sticky;
+    top: 0;
+
     width: 30vw;
+
+    padding: 10px;
+    background: var(--wyn-template-selector-background);
 }
 
 .wyn-template-selector-item-container{

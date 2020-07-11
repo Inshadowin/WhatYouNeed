@@ -1,6 +1,8 @@
 import React from 'react';
 import { Upload, message } from 'antd';
 
+import './Avatar.css'
+
 function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -52,7 +54,7 @@ class Avatar extends React.Component {
             <Upload
                 name="avatar"
                 listType="picture-card"
-                className="avatar-uploader"
+                className="wyn-avatar-uploader"
                 showUploadList={false}
                 action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 beforeUpload={beforeUpload}

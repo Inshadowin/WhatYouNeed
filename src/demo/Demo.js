@@ -39,7 +39,7 @@ const Demo = ({ pages }) => {
         </Sider>
         <Layout className="site-layout" style={{ marginLeft: 200, height: '100%' }}>
             <Header className="site-layout-background" style={{ padding: 12 }}>Header</Header>
-            <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+            <Content style={{ margin: '12px 4px 0 0', overflow: 'initial' }}>
                 <Switch>
                     {pages.map((page, index) => <Route key={index} exact path={page.path} component={page.component} />)}
                 </Switch>
