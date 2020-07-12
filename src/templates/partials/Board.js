@@ -3,7 +3,8 @@ import { Empty } from 'antd';
 import { debounce } from "debounce";
 
 import Gravity from './Gravity';
-import { defaultLayoutItemRender, defaultGetLayout } from './boardFunctions';
+import { defaultLayoutItemRender } from './boardFunctions';
+import { getLayoutItemId, getBoardItemId } from '../functions/accesors';
 
 import '../styles/Board.css';
 
@@ -21,16 +22,16 @@ BoardContainer.defaultProps = {
     ContainerComponent: DivComponent
 }
 
-const DefaultLayoutItem = React.memo(React.forwardRef(({ index, Component, ...rest }, forwardedRef) => {
-    const children = Component ? <Component {...rest} /> : `ITEM  ${index}`;
+// const DefaultLayoutItem = React.memo(React.forwardRef(({ index, Component, ...rest }, forwardedRef) => {
+//     const children = Component ? <Component {...rest} /> : `ITEM  ${index}`;
 
-    return <div className={'wyn-template-component-container'} key={index} ref={forwardedRef}>
-        <div className={'drag-handle'}></div>
-        <div className={'wyn-template-component'}>
-            {children}
-        </div>
-    </div>
-}))
+//     return <div className={'wyn-template-component-container'} key={index} ref={forwardedRef}>
+//         <div className={'drag-handle'}></div>
+//         <div className={'wyn-template-component'}>
+//             {children}
+//         </div>
+//     </div>
+// }))
 
 const Board = ({
     empty,
@@ -40,11 +41,11 @@ const Board = ({
     defaultClassName,
 
     items,
-    getLayout,
     layoutItemRender,
 
     onDrop,
 
+    onItemDelete,
     onLayoutChange,
     onLayoutChangeDebounceDelay,
 
@@ -53,17 +54,16 @@ const Board = ({
     LayoutItemComponent,
 
     ...rest }) => {
-    const boardItemsRendered = useMemo(() => (items || []).map(item => layoutItemRender(item.i, item)), [items]);
+    const boardItemsRendered = useMemo(() => (items || []).map(item => {
+        const onDelete = onItemDelete ? (...rest) => onItemDelete(getBoardItemId(item), ...rest) : undefined;
 
+        return layoutItemRender(getLayoutItemId(item), { onDelete, ...item })
+    }), [items]);
+    const handleLayoutChange = useCallback(debounce((...rest) => onLayoutChange && onLayoutChange(...rest)), [onLayoutChange, onLayoutChangeDebounceDelay]);
+    const handleDrop = useCallback((...rest) => onDrop && onDrop(...rest), [onDrop]);
+
+    //TODO: remove this bs
     if (!items || !items.length) return <BoardContainer defaultClassName={defaultClassName}>{empty}</BoardContainer>;
-
-    const handleLayoutChange = useCallback(debounce((...rest) => {
-        onLayoutChange && onLayoutChange(...rest);
-    }), [onLayoutChange, onLayoutChangeDebounceDelay]);
-
-    const handleDrop = useCallback((...rest) => {
-        onDrop && onDrop(...rest);
-    }, [onDrop]);
 
     return <BoardContainer className={className} defaultClassName={defaultClassName}>
         <GridComponent
@@ -98,8 +98,7 @@ Board.defaultProps = {
     GridComponent: Gravity,
     ContainerComponent: BoardContainer,
 
-    getLayout: defaultGetLayout,
-    LayoutItemComponent: DefaultLayoutItem,
+    // LayoutItemComponent: DefaultLayoutItem,
     layoutItemRender: defaultLayoutItemRender,
 }
 

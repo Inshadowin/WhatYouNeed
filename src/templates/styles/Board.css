@@ -1,5 +1,6 @@
 .wyn-template-board{
     width: 100%;
+    min-height: 100%;
     height: max-content;
 
     background: var(--wyn-theme-main-color);
@@ -7,43 +8,67 @@
 }
 
 .wyn-template-board .react-grid-item.react-grid-placeholder{
-   visibility: hidden;
+    visibility: hidden;
+}
+.wyn-template-board .react-grid-layout{
+    min-height: 100%;
 }
 
 .wyn-template-board .wyn-template-component-container{
     background: transparent;
-    /* border: 1px transparent dashed; */
 
     display: flex;
     flex-direction: column;
     
     align-items: center;
-    /* justify-content: center; */
-
-    /* border-radius: 25% 25% 25% 25%; */
     border-radius: var(--wyn-size-grid-3);
+
+    /* transition: all 0.3s linear; */
+}
+.wyn-template-board .wyn-template-component-container .wyn-template-header{
+    width: 100%;
+    height: max-content;
+
+    flex-shrink: 0;
+
+    position: relative;
+}
+.wyn-template-board .wyn-template-component-container .delete-button{  
+    width: 20px;
+    height: 20px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    background: rgb(245, 66, 66);
 }
 .wyn-template-board .wyn-template-component-container .drag-handle{  
     width: 100%;
     height: var(--wyn-size-grid-1);
-
-    flex-shrink: 0;
 }
-.wyn-template-board .wyn-template-component-container:hover .drag-handle{  
+.wyn-template-board .wyn-template-component-container:hover .drag-handle,
+.wyn-template-board.highlighted .wyn-template-component-container .drag-handle{  
     background: rgba(240, 240, 240, 1);
 }
 .wyn-template-board .wyn-template-component-container:hover .drag-handle:hover{  
     background: rgba(235, 235, 235, 1);
 }
-.wyn-template-board .wyn-template-component-container:hover{
-    /* border: 1px rgba(220, 220, 220, 0.9) dashed; */
-    background: rgba(245, 245, 245, 0.9);
+.wyn-template-board .wyn-template-component-container:hover,
+.wyn-template-board.highlighted .wyn-template-component-container{
+    background: rgba(250, 250, 250, 0.85);
 }
-.wyn-template-board .wyn-template-component-container .react-resizable-handle{
-    visibility: hidden;
+.wyn-template-board .wyn-template-component-container .react-resizable-handle,
+.wyn-template-board .wyn-template-component-container .delete-button,
+.wyn-template-board .wyn-template-component-container .wyn-template-header{
+    opacity: 0;
 }
-.wyn-template-board .wyn-template-component-container:hover .react-resizable-handle{
-    visibility: visible;
+.wyn-template-board .wyn-template-component-container:hover .react-resizable-handle,
+.wyn-template-board .wyn-template-component-container:hover .delete-button,
+.wyn-template-board .wyn-template-component-container:hover .wyn-template-header{
+    opacity: 1;
+
+    transition: opacity 0.3s ease-out;
 }
 
 .wyn-template-board .wyn-template-component{
@@ -51,5 +76,4 @@
 
     width: 100%;
     height: 100%;
-    /* padding-top: 0; */
 }

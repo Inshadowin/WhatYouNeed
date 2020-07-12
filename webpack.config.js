@@ -138,7 +138,8 @@ module.exports = function (webpackEnv) {
     },
     plugins: [
 	  new SourceMapDevToolPlugin({
-		filename: "[file].map"
+		filename: "[file].map",
+		append: "//#sourceMappingURL"
 	  }),
       //new webpack.EnvironmentPlugin({ ...process.env }),
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),

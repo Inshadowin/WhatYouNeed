@@ -1,0 +1,9 @@
+.wyn-picture-uploader{
+    object-fit: cover;
+    width: 100%;
+}
+
+.wyn-picture-uploader .ant-upload.ant-upload-select-picture-card{
+    object-fit: cover;
+    width: 100%;
+}

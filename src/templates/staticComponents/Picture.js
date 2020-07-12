@@ -1,7 +1,7 @@
 import React from 'react';
 import { Upload, message } from 'antd';
 
-import './Avatar.css'
+import './Picture.css'
 
 function getBase64(img, callback) {
     const reader = new FileReader();
@@ -21,7 +21,7 @@ function beforeUpload(file) {
     return isJpgOrPng && isLt2M;
 }
 
-class Avatar extends React.Component {
+class Picture extends React.Component {
     state = {
         loading: false,
     };
@@ -52,18 +52,18 @@ class Avatar extends React.Component {
         const { imageUrl } = this.state;
         return (
             <Upload
-                name="avatar"
+                name="picture"
                 listType="picture-card"
-                className="wyn-avatar-uploader"
+                className="wyn-picture-uploader"
                 showUploadList={false}
                 action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 beforeUpload={beforeUpload}
                 onChange={this.handleChange}
             >
-                {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                {imageUrl ? <img src={imageUrl} alt="picture" style={{ width: '100%' }} /> : uploadButton}
             </Upload>
         );
     }
 }
 
-export default Avatar;
+export default Picture;

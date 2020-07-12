@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import uid from 'uid';
+import { updatedDiff } from 'deep-object-diff';
 
 import Board from './partials/Board';
 import Selector from './partials/Selector';
@@ -11,6 +12,9 @@ import './styles/Main.css';
 const Main = ({
     defaultClassName,
     className,
+
+    boardClassName,
+    selectorClassName,
 
     initialBoardItems,
     initialBoardLayout,
@@ -27,6 +31,8 @@ const Main = ({
     BoardComponent,
     SelectorComponent,
 
+    selectorProps,
+
     ...rest }) => {
     const [boardItems, setBoardItems] = useState(getLayout(initialBoardItems));
     const [stateSelectorItems, setSelectorItems] = useState(initialSelectorItems);
@@ -34,6 +40,7 @@ const Main = ({
 
     const thisSelectorItems = useMemo(() => selectorItems || stateSelectorItems, [selectorItems, stateSelectorItems]);
 
+    const handleDelete = useCallback(id => setBoardItems(oldItems => oldItems.filter(item => item.i !== id)));
     const handleDrop = useCallback((e) => processDrop(e, draggingItem, thisSelectorItems, setBoardItems, getNewItemId), [selectorItems, thisSelectorItems, draggingItem, getNewItemId]);
     const handleDragEnd = useCallback((e, id) => setDraggingItem(null), [setDraggingItem]);
     const handleDragStart = useCallback((e, id) => setDraggingItem(e.target.id || id), [setDraggingItem]);
@@ -44,11 +51,20 @@ const Main = ({
             items={boardItems}
             layout={boardItems}
 
+            className={boardClassName}
+
             onDrop={handleDrop}
+            onItemDelete={handleDelete}
             onLayoutChange={handleLayoutChange}
+
+            {...rest}
         />
         <SelectorComponent
+            {...selectorProps}
+
             items={thisSelectorItems}
+
+            className={selectorClassName}
 
             onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
@@ -57,28 +73,51 @@ const Main = ({
     </div>
 }
 
+/**
+ * function applies layout changes to board items
+ * @param {Array<object>} newLayout 
+ * @param {Array<object>} oldBoardItems 
+ */
 const processLayoutChange = (newLayout = [], oldBoardItems = []) => {
-    if (!newLayout?.length || !oldBoardItems?.length) return [];
+    if (!newLayout?.length || !oldBoardItems?.length) return oldBoardItems || [];
 
-    const newBoardItems = (oldBoardItems || []).map(item => {
-        const layoutBoardItem = (newLayout || []).filter(layoutItem => layoutItem.i === item.i)[0];
+    const applyLayoutChanges = (boardItem, layoutBoardItem) => {
+        const diff = updatedDiff(layoutBoardItem, boardItem) || {};
+        if (!Object.keys(diff).length) return boardItem;
+
+        return { ...boardItem, ...layoutBoardItem };
+    }
+
+    const getNewBoardItem = (item) => {
+        const { i: boardItemId } = item;
+        const layoutBoardItem = (newLayout || []).filter(({ i: layoutItemId }) => boardItemId === layoutItemId)[0];
         if (!layoutBoardItem) return item;
 
-        //TODO: check with diff
-        return { ...item, ...layoutBoardItem };
-    })
+        return applyLayoutChanges(item, layoutBoardItem);
+    }
 
-    return newBoardItems;
+    return (oldBoardItems || []).map(getNewBoardItem)
 }
 
+/**
+ * function that generates unique id (i) of board/layout item
+ * @param {Array<object>} oldItems - array of all current items on board
+ */
 const getNewItemId = oldItems => {
-    // return oldItems.length.toString();
     const res = uid();
     if ((oldItems || []).some(({ id }) => id === res)) return getNewItemId(oldItems);
 
     return res;
 }
 
+/**
+ * function handles drop of item from selector to the board
+ * @param {Event} e - event of drop
+ * @param {String} draggingItem - id of item that is currently dropping
+ * @param {Array<object>} selectorItems - array of all items of selector
+ * @param {Function} setBoardItems - function that sets the items of board
+ * @param {Function} getNewItemId - function that generates unique id (i) of board/layout item
+ */
 const processDrop = (e, draggingItem, selectorItems, setBoardItems, getNewItemId) => {
     if (!draggingItem) return;
 
@@ -101,6 +140,8 @@ Main.defaultProps = {
     processLayoutChange: processLayoutChange,
 
     defaultClassName: 'wyn-template-builder-container',
+
+    // boardClassName: 'highlighted',
 
     BoardComponent: Board,
     SelectorComponent: Selector,
