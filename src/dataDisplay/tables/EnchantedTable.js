@@ -16,9 +16,8 @@ const generateUniqueSelector = (() => {
 
 class EnchantedTable extends React.PureComponent {
     constructor(props) {
-        super(props);
-
-        this.uniqueSelector = generateUniqueSelector('rscore-enchanted-table');
+        super(props)
+        this.uniqueSelector = generateUniqueSelector('wyn-enchanted-table');
     }
 
     componentDidUpdate(prevProps) {

@@ -2,14 +2,14 @@ import React, { useState, useCallback, useMemo } from 'react';
 import uid from 'uid';
 import { updatedDiff } from 'deep-object-diff';
 
-import Board from './partials/Board';
-import Selector from './partials/Selector';
+import Board from '../partials/Board';
+import Selector from '../partials/Selector';
 
-import { defaultGetLayout } from './partials/boardFunctions';
+import { defaultGetLayout } from '../partials/boardFunctions';
 
-import './styles/Main.css';
+import '../styles/TemplateEdit.css';
 
-const Main = ({
+const TemplateEdit = ({
     defaultClassName,
     className,
 
@@ -19,6 +19,8 @@ const Main = ({
     initialBoardItems,
     initialBoardLayout,
     initialSelectorItems,
+
+    onLayoutChange,
 
     selectorItems,
 
@@ -44,7 +46,7 @@ const Main = ({
     const handleDrop = useCallback((e) => processDrop(e, draggingItem, thisSelectorItems, setBoardItems, getNewItemId), [selectorItems, thisSelectorItems, draggingItem, getNewItemId]);
     const handleDragEnd = useCallback((e, id) => setDraggingItem(null), [setDraggingItem]);
     const handleDragStart = useCallback((e, id) => setDraggingItem(e.target.id || id), [setDraggingItem]);
-    const handleLayoutChange = useCallback(layout => setBoardItems(oldBoardItems => processLayoutChange(layout, oldBoardItems)), [processLayoutChange]);
+    const handleLayoutChange = useCallback(layout => setBoardItems(oldBoardItems => processLayoutChange(layout, oldBoardItems, onLayoutChange)), [onLayoutChange, processLayoutChange]);
 
     return <div className={[className, defaultClassName].filter(item => !!item).join(' ')}>
         <BoardComponent
@@ -78,7 +80,7 @@ const Main = ({
  * @param {Array<object>} newLayout 
  * @param {Array<object>} oldBoardItems 
  */
-const processLayoutChange = (newLayout = [], oldBoardItems = []) => {
+const processLayoutChange = (newLayout = [], oldBoardItems = [], onLayoutChange) => {
     if (!newLayout?.length || !oldBoardItems?.length) return oldBoardItems || [];
 
     const applyLayoutChanges = (boardItem, layoutBoardItem) => {
@@ -96,7 +98,10 @@ const processLayoutChange = (newLayout = [], oldBoardItems = []) => {
         return applyLayoutChanges(item, layoutBoardItem);
     }
 
-    return (oldBoardItems || []).map(getNewBoardItem)
+    const res = (oldBoardItems || []).map(getNewBoardItem);
+    onLayoutChange && onLayoutChange(res);
+
+    return res;
 }
 
 /**
@@ -129,7 +134,7 @@ const processDrop = (e, draggingItem, selectorItems, setBoardItems, getNewItemId
     setBoardItems(oldItems => [...oldItems, { ...newItem, i: getNewItemId(oldItems) }])
 }
 
-Main.defaultProps = {
+TemplateEdit.defaultProps = {
     initialBoardItems: [],
     initialSelectorItems: [],
 
@@ -147,4 +152,4 @@ Main.defaultProps = {
     SelectorComponent: Selector,
 }
 
-export default React.memo(Main);
+export default React.memo(TemplateEdit);
